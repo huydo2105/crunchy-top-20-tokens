@@ -167,13 +167,17 @@ function calculatePriceChange(tokenSpot, token1Day) {
     const token1DayData = token1DayMap.get(tokenAddress_tokenId);
 
     if (token1DayData) {
-      const currentPrice = parseFloat(token.currentPrice);
-      const price1DayAgo = parseFloat(token1DayData.currentPrice);
-      const priceChange = (currentPrice - price1DayAgo) / price1DayAgo * 100; // Calculate percentage change
+      const currentPriceXTZ = parseFloat(token.currentPrice);
+      const currentPriceUSD = parseFloat(token.currentPriceUsd);
+      const price1DayAgoXTZ = parseFloat(token1DayData.currentPrice);
+      const price1DayAgoUSD = parseFloat(token1DayData.currentPriceUsd);
 
+      const priceChangeXTZ = (currentPriceXTZ - price1DayAgoXTZ) / price1DayAgoXTZ * 100; // Calculate percentage change
+      const priceChangeUSD = (currentPriceUSD - price1DayAgoUSD) / price1DayAgoUSD * 100; // Calculate percentage change
       return {
         ...token,
-        priceChange: priceChange,
+        priceChangeXTZ: priceChangeXTZ,
+        priceChangeUSD: priceChangeUSD,
       };
   } else {
     return {...token, priceChange: 0}; // Skip tokens with missing data
@@ -213,7 +217,7 @@ async function main() {
   
   // Loop through and log the sorted tokens
   top20Tokens.forEach((token, index) => {
-    console.log(`${index + 1}. Symbol: ${token.symbol}, Current Price: ${token.currentPrice}, Current Price USD: ${token.currentPriceUsd}, TokenTVL: ${token.tokenTvl}, priceChange: ${token.priceChange}, Marketcap: ${token.marketCap}`);
+    console.log(`${index + 1}. Symbol: ${token.symbol}, Current Price: ${token.currentPrice}, Current Price USD: ${token.currentPriceUsd}, TokenTVL: ${token.tokenTvl}, priceChangeXtz: ${token.priceChangeXTZ}, priceChangeUsd: ${token.priceChangeUSD}, Marketcap: ${token.marketCap}`);
   });
 
 }
